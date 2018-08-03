@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <!-- <link rel="stylesheet" type="text/css" href="assets/css/style.css"> -->
 
+    <!-- Survey source: http://www.armory.com/tests/nerd500.html -->
 </head>
 <body>
     <div class = "container">
@@ -25,7 +26,14 @@
                 <div id = "survey"></div>
             </div>
         </div>
+        <footer class="footer">
+            <div class="container">
+                <p><a href="/api/friends">API Friends Link</a> | <a href="https://github.com/vdelariva/FriendFinder">GitHub Repo</a></p>
+            </div>
+        </footer>
+      
     </div>
+    
 
 <!-- jQuery 3.3.1 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -35,7 +43,57 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>    
 
 <!--Custom Javascript-->
-<script src="./friends.js"></script>
+<!-- <script src="./app.js"></script> -->
+
+<script type="text/javascript">
+
+// Survey Questions
+// ____________________________________________________________________________________
+
+var surveyQuestions = [
+
+  "I like science fiction.",
+  "I like to read technology news reports.",
+  "I have played a lot of video games.",
+  "I sometimes prefer fictional people to real ones.",
+  "I spend recreational time researching topics others might find dry or overly rigorous.",
+  "I spend more time at the library than any other public place.",
+  "I like to play RPGs. (Ex. D&D)",
+  "I can be socially awkward at times.",
+  "I have started writing a novel.",
+  "I care about super heroes."
+]
+
+// Main Function
+// ____________________________________________________________________________________
+console.log("load app.js")
+displaySurvey();
+
+
+// ____________________________________________________________________________________
+// Functions
+// ____________________________________________________________________________________
+
+function displaySurvey () {
+
+   // Display Survey
+
+   for (var i = 0; i < surveyQuestions.length; i++) {
+       $("#survey").append(
+       `<h4 id = ${i+1}class="font-weight-bold">Question ${i+1}</h4>`
+       +   `<h6>${surveyQuestions[i]}</h6>`
+       +   `<select id ="q1" class="custom-select custom-select-sm" style="width: 15%">`
+       +   `<option selected>Select an Option</option>`
+       +   `<option value="1">1 (Strongly Disagree</option>`
+       +   `<option value="2">2</option>`
+       +   `<option value="3">3</option>`
+       +   `<option value="4">4</option>`
+       +   `<option value="5">5 (Strongly Agree)</option>`
+       +   `</select><br><br>`
+       );
+   }
+}
+</script>
 
 </body>
 </html>
