@@ -19,11 +19,12 @@
             <h3 class="font-weight-bold">About You</h3>
             <form method="POST" role='form'>
                 <h5>Name (Required)</h5>
-                <input type="text" style="width: 100%" name="userName" class="tableEntry" id="userName" required>
+                <input type="text" style="width: 100%" name="userName" id="friendName" required>
                 <h5>Link to Photo Image (Required)</h5>
-                <input type="url" style="width: 100%" name="userImage" class="tableEntry" id="userImage" required>
+                <input type="url" style="width: 100%" name="userImage" id="photo" required>
                 <hr>
                 <div id = "survey"></div>
+                <button type="submit" class="btn btn-primary submit"><i class="fas fa-check-square"></i> Submit</button>
             </div>
         </div>
         <footer class="footer">
@@ -66,8 +67,26 @@ var surveyQuestions = [
 
 // Main Function
 // ____________________________________________________________________________________
-console.log("load app.js")
+
 displaySurvey();
+
+// When form submit button pressed
+
+$(".submit").on("click", function(event) {
+    event.preventDefault();
+
+    // Here we grab the form elements
+    var newFriend = getsurveyAnswers()
+    console.log(newFriend);
+
+    $.post("/api/friends", newFriend,
+    function(data) {
+        // If successfully added...
+        if (data) {
+            console.log("Yay! New friend added!");
+        }
+    });
+});
 
 
 // ____________________________________________________________________________________
@@ -80,9 +99,9 @@ function displaySurvey () {
 
    for (var i = 0; i < surveyQuestions.length; i++) {
        $("#survey").append(
-       `<h4 id = ${i+1}class="font-weight-bold">Question ${i+1}</h4>`
+       `<h4 class="font-weight-bold">Question ${i+1}</h4>`
        +   `<h6>${surveyQuestions[i]}</h6>`
-       +   `<select id ="q1" class="custom-select custom-select-sm" style="width: 15%">`
+       +   `<select id = "q${i}" class="custom-select custom-select-sm" style="width: 15%">`
        +   `<option selected>Select an Option</option>`
        +   `<option value="1">1 (Strongly Disagree</option>`
        +   `<option value="2">2</option>`
@@ -92,6 +111,30 @@ function displaySurvey () {
        +   `</select><br><br>`
        );
    }
+}
+
+// ____________________________________________________________________________________
+
+function getsurveyAnswers(){
+
+    let scores = [];
+
+    for ( var i=0; i<surveyQuestions.length; i++){
+        scores[i] = $(`#q${i}`).val();
+    }
+
+    let friend = {
+    friendName: $("#friendName").val().trim(),
+    photo: $("#photo").val().trim(),
+    scores: scores
+    };
+    console.log(`friend: ${JSON.stringify(friend)}`)
+    return friend;
+}
+// ____________________________________________________________________________________
+
+function findFriend(){
+    
 }
 </script>
 
