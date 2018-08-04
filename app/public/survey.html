@@ -17,16 +17,36 @@
             <h2 class="font-weight-bold">Survey Questions</h2>
             <hr>
             <h3 class="font-weight-bold">About You</h3>
-            <form method="POST" role='form'>
+            <form id ="friendForm" method="POST" role='form'>
                 <h5>Name (Required)</h5>
                 <input type="text" style="width: 100%" name="userName" id="friendName" required>
                 <h5>Link to Photo Image (Required)</h5>
                 <input type="url" style="width: 100%" name="userImage" id="photo" required>
                 <hr>
                 <div id = "survey"></div>
-                <button type="submit" class="btn btn-primary submit"><i class="fas fa-check-square"></i> Submit</button>
+                <button type="submit" class="btn btn-primary submit" data-toggle='modal' data-target='#friendModal'><i class="fas fa-check-square"></i> Submit</button>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div id="friendModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
         <footer class="footer">
             <div class="container">
                 <p><a href="/api/friends">API Friends Link</a> | <a href="https://github.com/vdelariva/FriendFinder">GitHub Repo</a></p>
@@ -76,15 +96,14 @@ $(".submit").on("click", function(event) {
     event.preventDefault();
 
     // Here we grab the form elements
-    var newFriend = getsurveyAnswers()
+    let newFriend = getsurveyAnswers()
     console.log(newFriend);
 
     $.post("/api/friends", newFriend,
-    function(data) {
-        // If successfully added...
-        if (data) {
-            console.log("Yay! New friend added!");
-        }
+    function(friendData) {
+        console.log(`friendData: ${JSON.stringify(friendData)}`);
+
+        findFriend(newFriend,friendData);
     });
 });
 
@@ -128,14 +147,38 @@ function getsurveyAnswers(){
     photo: $("#photo").val().trim(),
     scores: scores
     };
-    console.log(`friend: ${JSON.stringify(friend)}`)
+
+    // Reset the form
+    $("form")[0].reset();
     return friend;
 }
 // ____________________________________________________________________________________
 
-function findFriend(){
-    
+function findFriend(friend,friendData){
+    let ix = 0;
+    let friendScore = 4 * friendData.length;
+    let c = []
+
+    // Calculate friend score with each possible friend in the array
+    // Don't compare with last added item since that's the current friend
+    for (j=0; j<friendData.length-1; j++){
+        c = friend.scores.map( (v, i)  =>{ return Math.abs(v - friendData[j].scores[i]); });
+        console.log(`C: ${c}`);
+        var sum = c.reduce((c, b) => { return c + b; }, 0);
+        console.log(`sum: ${sum}`);
+        if ( sum < friendScore) {
+            friendScore = sum;
+            ix = j;
+        }
+        console.log(`friendscore: ${friendScore} ix: ${ix}`);
+
+        $(".modal-title").text(`${friendData[ix].friendName}`);
+        $(".modal-body").html(`<img src="${friendData[ix].photo}" alt="New Friend">`);
+    }
 }
+
+// ____________________________________________________________________________________
+
 </script>
 
 </body>
