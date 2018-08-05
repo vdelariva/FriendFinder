@@ -19,9 +19,9 @@
             <h3 class="font-weight-bold">About You</h3>
             <form id ="friendForm" method="POST" role='form'>
                 <h5>Name (Required)</h5>
-                <input type="text" style="width: 100%" name="userName" id="friendName" required>
+                <input type="text" style="width: 100%" id="friendName" required>
                 <h5>Link to Photo Image (Required)</h5>
-                <input type="url" style="width: 100%" name="userImage" id="photo" required>
+                <input type="url" style="width: 100%" id="photo" required>
                 <hr>
                 <div id = "survey"></div>
                 <button type="submit" class="btn btn-primary submit" data-toggle='modal' data-target='#friendModal'><i class="fas fa-check-square"></i> Submit</button>
@@ -46,7 +46,6 @@
             </div>
         </div>
 
-
         <footer class="footer">
             <div class="container">
                 <p><a href="/api/friends">API Friends Link</a> | <a href="https://github.com/vdelariva/FriendFinder">GitHub Repo</a></p>
@@ -54,7 +53,6 @@
         </footer>
       
     </div>
-    
 
 <!-- jQuery 3.3.1 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
