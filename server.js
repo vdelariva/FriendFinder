@@ -15,9 +15,12 @@ var PORT = process.env.PORT || 8080;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Setup access to static assets, specifically app.js
+app.use(express.static('app/public'))
+
 // Router
-// The below points our server to a series of "route" files.
-// These routes give our server a "map" of how to respond when users visit or request data from various URLs.
+// The below points the server to a series of "route" files.
+// These routes give the server a "map" of how to respond when users visit or request data from various URLs.
 
 require("./app/routing/apiRoutes")(app);
 require("./app/routing/htmlRoutes")(app);
